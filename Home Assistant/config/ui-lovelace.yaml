@@ -1,0 +1,242 @@
+title: Home Assistant - сервер
+views:
+
+  - title: Главная
+    icon: mdi:home-assistant
+    visible: 
+      - user: 538de03af9a54e15849b02499833e517
+    cards:
+
+      - type: vertical-stack
+        cards:
+        
+        - type: markdown
+          content: >
+             **Текущее состояние**
+             
+        - type: entities
+          show_header_toggle: false
+          entities:
+            - entity: sensor.time
+              name: Текущее время
+              icon: mdi:clock-outline
+            - entity: sensor.date
+              name: Дата
+              icon: mdi:calendar-check-outline
+            - entity: input_datetime.vremia
+        - type: horizontal-stack
+          cards:
+
+           - type: gauge
+             name: Загрузка CPU
+             unit: '%'
+             entity: sensor.processor_use
+             severity:
+                green: 0
+                yellow: 60
+                red: 85
+             
+           - type: gauge
+             name: Загрузка ОЗУ
+             unit: '%'
+             entity: sensor.memory_use_percent
+             severity:
+                green: 0
+                yellow: 60
+                red: 85
+                
+        - type: horizontal-stack
+          cards:
+
+           - type: gauge
+             name: Диск заполнен
+             unit: '%'
+             entity: sensor.disk_use_percent
+             severity:
+                green: 0
+                yellow: 60
+                red: 85    
+                
+           - type: gauge
+             name: Свободное место
+             unit: 'Гб'
+             entity: sensor.disk_free
+             severity:
+                red: 2
+                yellow: 6
+                green: 8
+                
+        - type: history-graph
+          entities:
+           - entity: sensor.maria_db
+             name: Maria DB
+
+
+  - title: Погода
+    icon: mdi:weather-partly-snowy-rainy
+    visible: 
+      - user: 538de03af9a54e15849b02499833e517
+      - user: ba49644be543415dbb044aea6e04ecef
+    cards:
+
+        - type: entities
+          entities:
+
+            # -  sensor.school86_3h_forecast
+            -  sensor.school86_cloud_coverage
+            -  sensor.school86_condition
+            -  sensor.school86_geomagnetic_field
+            -  sensor.school86_humidity
+            -  sensor.school86_pressure
+            -  sensor.school86_pressure_mmhg
+            -  sensor.school86_rain
+            -  sensor.school86_snow
+            -  sensor.school86_storm
+            -  sensor.school86_temperature
+            -  sensor.school86_temperature_feels_like
+            -  sensor.school86_water_temperature
+            -  sensor.school86_wind_bearing
+            -  sensor.school86_wind_speed
+            -  script.send_message_1
+          title: Gismeteo
+        - type: weather-forecast
+          entity: weather.school86_2
+          show_forecast: false
+
+             
+  - title: telegram
+    icon: mdi:chat-alert-outline
+    visible: 
+      - user: 538de03af9a54e15849b02499833e517
+      - user: ba49644be543415dbb044aea6e04ecef
+    cards:
+        - type: entities
+          show_header_toggle: false
+          entities:
+              - entity: script.send_message_1
+                name: Сервис уведомлений
+    #          - entity: switch.sonoff_1000e8aae4
+     #           name: Вентилятор
+  - title: Параметры микроклимата кабинета
+    icon: mdi:usb-flash-drive
+    visible: 
+      - user: 538de03af9a54e15849b02499833e517
+      - user: ba49644be543415dbb044aea6e04ecef
+    cards:
+    
+
+        - type: entities
+          title: Параметры микроклимата кабинета
+          show_header_toggle: false
+          entities:
+
+             - entity: switch.relay
+               name: Включиение освещения доски 
+             - entity: sensor.co2
+               name: Концентрация углекислого газа
+             - entity: sensor.humidity
+               name: Уровень влажности в кабинете
+             - entity: sensor.temperature
+               name: Температура в кабинете
+             - entity: input_datetime.time_on
+               name: Время включения
+               
+               
+                
+  - title: Расписание
+    icon: mdi:bell-alert-outline
+    visible: 
+      - user: 538de03af9a54e15849b02499833e517    
+      - user: ba49644be543415dbb044aea6e04ecef
+
+
+    cards:
+    #   - type: vertical-stack
+    #      cards:           
+        #   - type: markdown
+        #      content: >
+        #         **Расписание**
+
+
+
+           - type: entities
+             entities:
+             - entity: automation.switch_on
+               name: 1 урок включение
+             - entity: automation.switch_on
+               name: 2 урок включение
+             - entity: automation.switch_on
+               name: 3 урок включение             
+             - entity: automation.switch_on
+               name:  4 урок включение            
+             - entity: automation.switch_on
+               name:  5 урок включение              
+             - entity: automation.switch_on
+               name:  6 урок включение              
+             - entity: automation.switch_on
+               name:  7 урок включение              
+             - entity: automation.switch_on            
+               name:  8 урок включение   
+
+           - type: entities
+             entities:
+             - entity: input_datetime.time_on
+               name: 1 урок включение
+             - entity: input_datetime.time_on1
+               name: 2 урок включение
+             - entity: input_datetime.time_on2
+               name: 3 урок включение             
+             - entity: input_datetime.time_on3
+               name:  4 урок включение            
+             - entity: input_datetime.time_on4
+               name:  5 урок включение              
+             - entity: input_datetime.time_on5
+               name:  6 урок включение              
+             - entity: input_datetime.time_on6
+               name:  7 урок включение              
+             - entity: input_datetime.time_on7             
+               name:  8 урок включение                
+             - entity:  sensor.time
+               name: Текущее время
+           - type: entities
+             entities:
+             - entity: input_datetime.time_off
+               name: 1 урок выключение
+             - entity: input_datetime.time_off1
+               name: 2 урок выключение    
+             - entity: input_datetime.time_off2
+               name: 3 урок выключение              
+             - entity: input_datetime.time_off3
+               name: 4 урок выключение              
+             - entity: input_datetime.time_off4
+               name: 5 урок выключение              
+             - entity: input_datetime.time_off5
+               name: 6 урок выключение              
+             - entity: input_datetime.time_off6
+               name: 7 урок выключение              
+             - entity: input_datetime.time_off7             
+               name: 8 урок выключение     
+             - entity: switch.relay
+               name: Включиение освещения доски 
+             - entity:  input_boolean.auto
+               name: Авторежим
+  - title: grafana
+    icon: mdi:water-thermometer-outline
+    visible: 
+      - user: ba49644be543415dbb044aea6e04ecef
+      - user: 538de03af9a54e15849b02499833e517
+    cards:
+    
+      - type: iframe
+        url: https://myschool86.duckdns.org:444/api/hassio_ingress/jkA0X5nfQQTOAtaQUYDk5J8OPOTjefSHaXs4jIO1x1g/d-solo/XitgH1T7z/temperatura-vlazhnost-v-kabinete-robototekhniki-mou-ssh-86?orgId=1&from=1644526800000&to=1649710799000&panelId=2 width="900" height="400" frameborder="0"</iframe>
+        aspect_ratio: 150%
+      - type: iframe
+        url:  https://myschool86.duckdns.org:444/api/hassio_ingress/jkA0X5nfQQTOAtaQUYDk5J8OPOTjefSHaXs4jIO1x1g/d-solo/og0cfF14k/podsvetka-doski?orgId=1&from=1676235600000&to=1676667599000&panelId=2
+        aspect_ratio: 150%       
+      - type: iframe
+        url: https://myschool86.duckdns.org:444/api/hassio_ingress/jkA0X5nfQQTOAtaQUYDk5J8OPOTjefSHaXs4jIO1x1g/d-solo/C2Qoao27z/soderzhanie-co2?orgId=1&from=1676322000000&to=1676753999000&panelId=2
+        aspect_ratio: 150%         
+        
+        
+       
+        
