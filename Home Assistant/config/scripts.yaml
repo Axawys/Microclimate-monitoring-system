@@ -1,0 +1,10 @@
+telegramm:
+
+    script:
+    
+      send_message_1:
+        alias: Отправка через сервис уведомлений
+        sequence:
+        -  service: notify.telegram_id_1
+           data:
+             message: "Текущее вркмя - {{states('sensor.time') }} . Все в порядке"
