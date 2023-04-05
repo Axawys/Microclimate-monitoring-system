@@ -1,0 +1,84 @@
+esphome:
+  name: popov2
+  platform: ESP8266
+  board: nodemcuv2
+#  on_boot:
+#    then:
+      # read the RTC time once when the system boots
+#      sntp.read_time:
+  
+
+
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: "123456789"
+
+wifi:
+  networks:
+  - ssid: "ZYXEL26"
+    password: "400065400065"
+    priority: 1
+  - ssid: "BQ-5700"
+    password: "123456789"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Popov2 project"
+    password: "123456789"
+    
+web_server:
+  port: 80
+
+i2c:
+    sda: D3
+    scl: D4
+    scan: true
+
+
+sensor:  
+  - platform: hdc1080
+    temperature:
+      name: "Livingroom Temperature"
+      id: temp
+    humidity:
+      name: "Livingroom Humidity"
+      id: humi
+    address: 0x40
+    update_interval: 60s
+  - platform: ccs811
+    eco2:
+      name: "Livingroom eCO2"
+      id: eco2
+    tvoc:
+      name: "Livingroom TVOC"
+      id: tvoc
+    temperature: temp
+    humidity: humi
+    baseline: 0xD3BE
+    address: 0x5A
+    update_interval: 60s
+    
+
+time:
+#  - platform: ds1307
+    #id: ds1307_time
+#    update_interval: never
+#    id: my_time
+  - platform: sntp
+    id: sntp_time
+  - platform: homeassistant
+    id: homeassistant_time
+    timezone: Europe/Moscow 
+   
+   
+switch:
+  - platform: gpio
+    pin: D2
+    inverted: true
+    name: "Relay"
+    id: RELAY
+    restore_mode: RESTORE_DEFAULT_OFF
