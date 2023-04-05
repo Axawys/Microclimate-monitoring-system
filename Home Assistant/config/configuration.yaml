@@ -1,0 +1,142 @@
+homeassistant:
+  name: School86
+  latitude: !secret latitude_coord
+  longitude: !secret longitude_coord
+  elevation: 67
+  unit_system: metric
+  time_zone: Europe/Volgograd
+ # customize: !include customize.yaml
+  packages: !include_dir_merge_named includes/packages
+  external_url: https://myschool86.duckdns.org
+  internal_url: http://192.168.1.69:8123
+  auth_providers: 
+    - type: homeassistant
+default_config:
+  #packages: !include_dir_merge_list /includes/packages
+# Text to speech
+tts:
+  - platform: google_translate
+
+
+http:
+  ssl_certificate: /ssl/fullchain.pem
+  ssl_key: /ssl/privkey.pem 
+
+  
+
+lovelace:
+  mode: yaml
+  resources:
+   - url: /hacsfiles/lovelace-auto-entities/auto-entities.js
+     type: module
+   - url: /hacsfiles/vertical-stack-in-card/vertical-stack-in-card.js
+     type: js 
+  
+# hacs:
+#   token: 8a6fb49faaf10adf27abcf2508a3e19b30559be5
+#   appdaemon: true
+#   python_script: true
+#   theme: true
+
+#secret: !include secret.yaml
+group: !include groups.yaml
+automation: !include automations.yaml
+# script: !include scripts.yaml
+#packages: !include_dir_merge_list /includes/packages
+scene: !include scenes.yaml
+sensor: !include sensor.yaml
+timer: !include timer.yaml
+input_number: !include input_number.yaml
+switch: !include_dir_merge_list include/switches
+# !include_dir_merge_list /config/includes/packages
+
+light:
+  - platform: flux_led
+    automatic_add: true
+    devices:
+        192.168.1.74:
+          name: Led Controller
+          mode: 'w'
+          protocol: 'ledenet'
+  
+recorder:
+    db_url: mysql://hass:hass@core-mariadb/homeassistant?charset=utf8
+    purge_keep_days: 3
+    
+
+media_source: \\FSERVER\scan
+
+telegram_bot: 
+  - platform: polling
+    api_key: !secret api_key_bot
+    allowed_chat_ids:
+      - !secret telegram_id_1
+      - !secret telegram_id_2
+     
+notify_events:
+  token: 6QOsVtWGfCVZzhP1fCV-KhUSlQ5ZFDyk
+  
+notify:
+
+   - name: telegram_id_1
+     platform: telegram
+     chat_id: !secret telegram_id_1
+   
+   - name: telegram_id_2
+     platform: telegram
+     chat_id: !secret telegram_id_2
+    
+   - name: WhatsApp
+     platform: notify_events
+
+mqtt:
+#   broker: core-mosquitto  # Локальный брокер
+# #  broker: 192.168.1.69   # Внешний брокер
+#   discovery: true
+#   discovery_prefix: homeassistant  
+#   username: mosquitto
+#   password: school86
+   
+influxdb:
+  host: a0d7b954-influxdb
+  port: 8086
+  database: homeassistant
+  username: homeassistant
+  password: homeassistant
+  include:  
+#    domains:
+ #      - sensor
+    entities:
+
+        -  sensor.school86_3h_forecast
+        -  sensor.school86_cloud_coverage
+        -  sensor.school86_condition
+        -  sensor.school86_geomagnetic_field
+        -  sensor.school86_humidity
+        -  sensor.school86_pressure
+        -  sensor.school86_pressure_mmhg
+        -  sensor.school86_rain
+        -  sensor.school86_snow
+        -  sensor.school86_storm
+        -  sensor.school86_temperature
+        -  sensor.school86_temperature_feels_like
+        -  sensor.school86_water_temperature
+        -  sensor.school86_wind_bearing
+        -  sensor.school86_wind_speed    
+        -  switch.relay
+        -  sensor.co2
+        -  sensor.humidity
+        -  sensor.temperature
+# google_assistant:
+#   project_id: home-assistent-f3cd9
+#   api_key: AIzaSyDBk6L01lpUYHPl9ah04sEquucbXDlizI0
+#   exposed_domains:
+#     - sensor
+
+# weather:
+#   - platform: gismeteo    
+#     mode: hourly
+#     latitude: !secret latitude_coord
+#     longitude: !secret longitude_coord
+frontend:
+  themes: !include_dir_merge_named themes
