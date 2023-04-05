@@ -1,0 +1,388 @@
+telegramm:
+
+    script:
+    
+      send_message_1:
+        alias: Отправка через сервис уведомлений телеграм
+        sequence:
+        -  service: notify.telegram_id_1
+           data:
+             message: "Влажность в кабинете составляет {{ states('sensor.humidity') }} % и не соответствует нормам СанПин.
+                     Текущее время - {{states('sensor.time') }} ."
+             
+      send_message_2:
+        alias: Отправка через сервис уведомлений телеграм2
+        sequence:
+        -  service: notify.telegram_id_2
+           data:
+             message: "Влажность в кабинете составляет {{ states('sensor.humidity') }} % и не соответствует нормам СанПин.
+                       Текущее время - {{states('sensor.time') }} ."
+             
+  
+    
+      send_message_hum:
+        alias: Отправка через сервис уведомлений Вайбер
+        sequence:
+        - service: notify.WhatsApp
+          data:
+            message: "Влажность в кабинете составляет {{ states('sensor.humidity') }} % и не соответствует нормам СанПин.
+                     Текущее время - {{states('sensor.time') }} ."
+
+
+
+
+
+
+    automation:
+    
+# Оповещения в телеграм по влажности    
+    - id: Проблемы с параметром влажности в кабинете
+      alias: hum_alarm1_teleg
+      initial_state: true  
+      trigger:
+        - platform: numeric_state
+          entity_id: sensor.humidity
+          # At least one of the following required
+          above: 0
+          below: 40
+      action:
+           #- service: script.turn_on
+        - service: script.turn_on
+          entity_id: 
+                - script.send_message_2
+    - id: Проблемы с параметром влажности в кабинете2
+      alias: hum_alarm2_teleg
+      initial_state: true  
+      trigger:
+        - platform: numeric_state
+          entity_id: sensor.humidity
+          # At least one of the following required
+          above: 60
+          below: 100
+      action:
+           #- service: script.turn_on
+        - service: script.turn_on
+          entity_id: 
+                - script.send_message_2
+                
+# Оповещения в Вайбер по влажности   
+                
+    - id: Проблемы с параметром влажности в кабинете3
+      alias: hum_alarm1_viber
+      initial_state: true  
+      trigger:
+        - platform: numeric_state
+          entity_id: sensor.humidity
+          # At least one of the following required
+          above: 0
+          below: 40
+      action:
+           #- service: script.turn_on
+        - service: script.turn_on
+          entity_id: 
+                - script.send_message_hum
+    - id: Проблемы с параметром влажности в кабинете4
+      alias: hum_alarm2_viber
+      initial_state: true  
+      trigger:
+        - platform: numeric_state
+          entity_id: sensor.humidity
+          # At least one of the following required
+          above: 60
+          below: 100
+      action:
+           #- service: script.turn_on
+        - service: script.turn_on
+          entity_id: 
+                - script.send_message_hum
+                
+                
+    - id: Включение по времени
+      alias: switch_on
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_on
+      action:
+        service: switch.turn_on
+        target:
+          entity_id: switch.relay
+          
+    - id: Выключение по времени
+      alias: switch_off
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_off
+      action:
+        service: switch.turn_off
+        target:
+          entity_id: switch.relay
+          
+    - id: Включение по времени1
+      alias: switch_on
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_on1
+      action:
+        service: switch.turn_on
+        target:
+          entity_id: switch.relay
+          
+    - id: Выключение по времени1
+      alias: switch_off
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_off1
+      action:
+        service: switch.turn_off
+        target:
+          entity_id: switch.relay
+          
+          
+    - id: Включение по времени2
+      alias: switch_on
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_on2
+      action:
+        service: switch.turn_on
+        target:
+          entity_id: switch.relay
+          
+    - id: Выключение по времени2
+      alias: switch_off
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_off2
+      action:
+        service: switch.turn_off
+        target:
+          entity_id: switch.relay
+          
+          
+    - id: Включение по времени3
+      alias: switch_on
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_on3
+      action:
+        service: switch.turn_on
+        target:
+          entity_id: switch.relay
+          
+    - id: Выключение по времени3
+      alias: switch_off
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_off3
+      action:
+        service: switch.turn_off
+        target:
+          entity_id: switch.relay          
+          
+    - id: Включение по времени4
+      alias: switch_on
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_on4
+      action:
+        service: switch.turn_on
+        target:
+          entity_id: switch.relay
+          
+    - id: Выключение по времени4
+      alias: switch_off
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_off4
+      action:
+        service: switch.turn_off
+        target:
+          entity_id: switch.relay    
+          
+    - id: Включение по времени5
+      alias: switch_on
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_on5
+      action:
+        service: switch.turn_on
+        target:
+          entity_id: switch.relay
+          
+    - id: Выключение по времени5
+      alias: switch_off
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_off5
+      action:
+        service: switch.turn_off
+        target:
+          entity_id: switch.relay          
+          
+    - id: Включение по времени6
+      alias: switch_on
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_on6
+      action:
+        service: switch.turn_on
+        target:
+          entity_id: switch.relay
+          
+    - id: Выключение по времени6
+      alias: switch_off
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_off6
+      action:
+        service: switch.turn_off
+        target:
+          entity_id: switch.relay          
+          
+          
+          
+    - id: Включение по времени7
+      alias: switch_on
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_on7
+      action:
+        service: switch.turn_on
+        target:
+          entity_id: switch.relay
+          
+    - id: Выключение по времени7
+      alias: switch_off
+      initial_state: true  
+      trigger:
+      - platform: time
+      # Military time format. This trigger will fire at 3:32 PM
+        at: input_datetime.time_off7
+      action:
+        service: switch.turn_off
+        target:
+          entity_id: switch.relay          
+          
+          
+          
+          
+          
+          
+    - id: Запрос на отчет             
+      alias: send_report
+      initial_state: true
+      trigger:
+      - platform: event
+        event_type: telegram_command
+        event_data:
+          command: '/report'
+      action:
+        - service: notify.telegram_id_2
+          data:
+             message: | 
+                     {{"\U0001F4AC"}} Кабинет № 26
+                     {{"\U0001F552"}} на {{ states('sensor.time_date') }}
+                     {{"\U0001F321"}}Температура воздуха: {{ states('sensor.temperature') }} ℃ 
+                     {{"\U0001F4A7"}} Относительная влажность воздуха: {{ states('sensor.humidity') }} %
+                     {{"\U0001F321"}}Температура на улице: {{ states('sensor.school86_temperature') }} ℃ 
+                     {{"\U0001F6C0"}} Относительная влажность на улице: {{ states('sensor.school86_humidity') }} %
+                     {{"\U0001F4A8"}} Содержание Co2 в воздухе: {{ states('sensor.co2') }} ppm
+                     
+                     
+    - id: Включение света через телеграмм             
+      alias: switch_on
+      initial_state: true
+      trigger:
+      - platform: event
+        event_type: telegram_command
+        event_data:
+          command: '/light_on'
+      action:
+        service: switch.turn_on
+        target:
+          entity_id: switch.relay   
+          
+    - id: Выключение света через телеграмм             
+      alias: switch_off
+      initial_state: true
+      trigger:
+      - platform: event
+        event_type: telegram_command
+        event_data:
+          command: '/light_off'
+      action:
+        service: switch.turn_off
+        target:
+          entity_id: switch.relay
+          
+          
+    - id: Клавиатура телеграмм бота
+      alias: telegram_keyboard
+      initial_state: true
+      trigger:
+      - platform: event
+        event_type: telegram_command
+        event_data:
+          command: '/start'
+      action:
+      - service: notify.telegram_id_1
+        data:
+          message: 'commands'
+          data:
+            keyboard:
+              - '/report, /vent_vanna'
+              - '/light_on, /light_off, /light3'           
+              - '/report3, /light4, /light5'  
+          
+# condition:
+#   condition: or
+#   conditions:
+#     - condition: sun
+#       after: sunset
+#     - condition: sun
+#       before: sunrise
+      
+    # - id: Проблемы с параметром влажности в кабинете
+    #   alias: hum_alarm
+    #   initial_state: true  
+    #   trigger:
+    #     - platform: numeric_state
+    #       entity_id: sensor.humidity
+    #       # At least one of the following required
+    #       above: 40
+    #       below: 50
+    #   action:
+    #       #- service: script.turn_on
+    #     - service: script.turn_on
+    #       entity_id: 
+         
